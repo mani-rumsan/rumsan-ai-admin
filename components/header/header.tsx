@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { CreateTeamDialog } from "../dashboard/CreateTeamDialog";
 import { ProfileUserDashboard } from "../profile/profile";
 import { usePathname } from "next/navigation";
+import { useWorkspaceQuery } from "@/queries/workspaceQuery";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -22,22 +23,28 @@ export function MainHeader({ onMenuClick }: HeaderProps) {
   const pathname = usePathname();
   const [createTeamDialogOpen, setCreateTeamDialogOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { data: workspaceData, isLoading, isError } = useWorkspaceQuery(); // ✅ fetch workspaces
+  const [currentValue, setCurrentValue] = useState("Select Workspace");
 
   useEffect(() => {
     setIsMounted(true);
+    const savedName = localStorage.getItem("workspaceName");
+    if (savedName) setCurrentValue(savedName);
   }, []);
 
   const handleTeamCreated = async (teamSlug: string) => {
     console.log("Team created with slug:", teamSlug);
+  };
+  const handleWorkspaceSelect = (workspace: { id: string; name: string }) => {
+    localStorage.setItem("workspaceId", workspace.id);
+    localStorage.setItem("workspaceName", workspace.name);
+    setCurrentValue(workspace.name);
   };
 
   if (!isMounted) return null;
 
   // Check if we're in the admin dashboard
   const isAdminDashboard = pathname?.startsWith("/admin");
-
-  // Default workspace display
-  const currentValue = "Demo Workspace";
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 py-3 lg:px-6">
@@ -86,14 +93,32 @@ export function MainHeader({ onMenuClick }: HeaderProps) {
                     "data-[state=open]:bg-accent"
                   )}
                 >
-                  <span>{currentValue}</span>
+                  <span>
+                    {isLoading
+                      ? "Loading..."
+                      : isError
+                      ? "Error loading"
+                      : currentValue}
+                  </span>
                   <ChevronDown className="h-4 w-4 opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
+
               <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuItem className="bg-accent">
-                  Demo Workspace
-                </DropdownMenuItem>
+                {workspaceData?.data?.myWorkspaces.length ? (
+                  workspaceData.data.myWorkspaces.map((workspace) => (
+                    <DropdownMenuItem
+                      key={workspace.id}
+                      onClick={() => handleWorkspaceSelect(workspace)}
+                    >
+                      {workspace.name}
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <DropdownMenuItem disabled>
+                    No workspaces found
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           )}

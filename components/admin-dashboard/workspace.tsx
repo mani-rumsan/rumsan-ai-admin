@@ -34,6 +34,7 @@ export default function WorkspacesPage() {
   const [workspaceDescription, setWorkspaceDescription] = useState("");
 
   const { data: workspaceData, isLoading } = useWorkspaceQuery();
+
   const createWorkspace = useCreateWorkspace();
 
   const handleCreateWorkspace = () => {
@@ -81,9 +82,9 @@ export default function WorkspacesPage() {
           <WorkspacesLoadingGrid />
         ) : (
           <>
-            {(workspaceData?.data?.length ?? 0) > 0 && (
+            {(workspaceData?.data?.myWorkspaces.length ?? 0) > 0 && (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {workspaceData?.data?.map((workspace) => (
+                {workspaceData?.data?.myWorkspaces?.map((workspace) => (
                   <Link
                     key={workspace.id}
                     href={`/admin/workspaces/${workspace.id}`}
@@ -130,12 +131,12 @@ export default function WorkspacesPage() {
                   <Plus className="h-12 w-12 text-muted-foreground" />
                 </div>
                 <CardTitle className="text-2xl mb-3">
-                  {workspaceData?.data?.length === 0
+                  {workspaceData?.data?.myWorkspaces.length === 0
                     ? "Create Your First Workspace"
                     : "Create a New Workspace"}
                 </CardTitle>
                 <CardDescription className="text-base leading-relaxed max-w-md mx-auto">
-                  {workspaceData?.data?.length === 0
+                  {workspaceData?.data?.myWorkspaces.length === 0
                     ? "Get started by setting up a workspace where your team can collaborate and manage AI assistants together"
                     : "Set up a new workspace for your team to collaborate and manage AI assistants"}
                 </CardDescription>
