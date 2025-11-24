@@ -5,7 +5,7 @@ import { Header } from "@/components/bank/header";
 import { HeroSection } from "@/components/bank/hero-section";
 import { TestimonialsSection } from "@/components/bank/testinimial-section";
 
-export default function Home() {
+export default function BankHome() {
   return (
     <main className="min-h-screen">
       <Header />
@@ -15,5 +15,5 @@ export default function Home() {
       <CTASection />
       <Footer />
     </main>
-  )
+  );
 }
