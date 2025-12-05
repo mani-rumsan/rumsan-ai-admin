@@ -27,7 +27,6 @@ export function PricingSection() {
         "10,000 queries/month",
         "Custom branding",
       ],
-      popular: true,
     },
     {
       name: "Enterprise",
@@ -88,7 +87,7 @@ export function PricingSection() {
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <span className="text-sm">{feature}</span>
                   </li>
                 ))}

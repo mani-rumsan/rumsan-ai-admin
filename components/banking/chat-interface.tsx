@@ -234,7 +234,7 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-medium text-sm text-gray-900">
-                    AI Assistant
+                    Rumsan AI
                   </span>
                   <span className="text-xs text-gray-500">thinking...</span>
                 </div>
